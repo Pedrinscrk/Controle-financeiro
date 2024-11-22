@@ -2,13 +2,17 @@ const transactionUl = document.querySelector("#transactions");
 const incomeDisplay = document.querySelector('#money-plus')
 const despDisplay = document.querySelector('#money-minus')
 const balanceDisplay = document.querySelector('#balance')
+const form = document.querySelector('#form')
+const inputTransactionName = document.querySelector('#text')
+const inputTransactionAmount = document.querySelector('#amount') 
+console.log(form)
 // console.log({incomeDisplay, expenseDisplay, balanceDisplay});
 
 const dummyTransactions = [
-  { id: 1, name: "Bolo de brigadeiro", amount: -20 },
+  { id: 1, name: "Bolo de brigadeiro", amount: - 20 },
   { id: 2, name: "Salário", amount: 300 },
   { id: 3, name: "Torta de limão", amount: -10 },
-  { id: 4, name: "Bateria", amount: 150 },
+  { id: 4, name: "Carro", amount: - 150 },
 ];
 
 const addTransactionIntoDOM = (transaction) => {
@@ -41,23 +45,22 @@ const updateBalanceValues = () => {
     const transactionsAmounts = dummyTransactions.map(
       (transaction) => transaction.amount
     );
-
+    const total = transactionsAmounts.reduce((acumulator, transaction) => acumulator + transaction, 0).toFixed(2);
     const income = transactionsAmounts
-  .filter((value) => value > 0)
-  .reduce((accumulator, value) => accumulator + value, 0)
-  .toFixed(2);
+    .filter((value) => value > 0)
+    .reduce((accumulator, value) => accumulator + value, 0)
+    .toFixed(2);
+    // console.log(income)
 
-const expense = Math.abs(transactionsAmounts
-  .filter((value) => value < 0)
-  .reduce((accumulator, value) => accumulator + value, 0))
-  .toFixed(2);
+    
+    const desp = Math.abs (transactionsAmounts
+    .filter((value) => value < 0 )
+    .reduce((accumulator, value)=> accumulator + value,0))
+    .toFixed(2);
 
-const total = transactionsAmounts
-  .reduce((accumulator, transaction) => accumulator + transaction, 0)
-  .toFixed(2);
-    balanceDisplay.textContent = `R$ ${total}`
-    incomeDisplay.textContent = `R$ ${income}`
-    despDisplay.textContent =` R$ ${desp}`
+    balanceDisplay.textContent =  `R$ ${total} `
+    incomeDisplay.textContent = ` R$ ${income} `
+    despDisplay.textContent =  `R$ ${desp} `
   };
   
 
@@ -67,6 +70,21 @@ const init = () => {
 };
 
 init();
+
+const generateID = ()=> Math.round(Math.random()*1000)
+
+form.addEventListener('submit', event => {
+  event.preventDefault()
+  const transName = inputTransactionName.value.trim()
+  const transAmount = inputTransactionAmount.value.trim()
+  if(transName==='' || transAmount === ''){
+   alert('Por gentileza preencha tanto o nome quanto o valor da transação!!!')
+   return
+  }
+  const transaction = { id: generateID(), name: transName, amount: transAmount }
+  console.log(transaction)
+})
+
 
 // const numbers = [1, 2, 3];
 // const sum = numbers.reduce((accumulator, number) => accumulator + number, 0);
